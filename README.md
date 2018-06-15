@@ -38,6 +38,38 @@ public class ExampleHealthIndicator implements HealthIndicator
 }
 ```
 
+The app provides a set of end points to toggle the state of the health indicator as shown in the code below.
+
+```java
+@RestController
+public class RootController {
+
+    @Autowired
+    private ExampleHealthIndicator exampleHealthIndicator;
+
+    @GetMapping
+    public String get()
+    {
+        return "Health Checks Will Pass: "  + exampleHealthIndicator.getState();
+    }
+
+    @GetMapping("/fail")
+    public String fail()
+    {
+        exampleHealthIndicator.setState(false);
+        return "Health Checks Will Pass: "  + exampleHealthIndicator.getState();
+    }
+
+    @GetMapping("/pass")
+    public String pass()
+    {
+        exampleHealthIndicator.setState(true);
+        return "Health Checks Will Pass: "  + exampleHealthIndicator.getState();
+    }
+}
+
+```
+
 Run the application and check that it cf consider's it healthy. Then send get request to `/fail` 
 to make the health indicator fail this will cause  `/actuator/health` to start failing.
 
