@@ -7,7 +7,14 @@ These methods are documented at <https://docs.cloudfoundry.org/devguide/deploy-a
 
 The http end point health check can be used with spring boot applications to point at the actuator
 health endpoint. CF will issue an HTTP GET on `/actuator/health` every 30 seconds if it gets and 
-`HTTP 200` response then it will consider the app health, if not it will restart the app.
+`HTTP 200` response then it will consider the app healthy, if not it will restart the app. 
+
+When deploying the application you need to request the http health check via `cf` cli arguments or in 
+the deployment manifest by adding the following.
+```yaml
+  health-check-type: http
+  health-check-http-endpoint: /actuator/health
+``` 
 
 This application contains a custom health indicator that can be toggled to observe how CF reacts
 to a failing health check.
